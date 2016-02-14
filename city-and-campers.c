@@ -1,9 +1,9 @@
 #include<stdio.h>
+#include<limits.h>
 
-
-int pSet[100010],n,count[100010]={0};
+int pSet[100010],n,count[100010]={0},min=1,max=1;
 int findSet(int i){
-    return pSet[i]==i?i:(p[i]=findSet(pSet[i]));
+    return pSet[i]==i?i:(pSet[i]=findSet(pSet[i]));
 }
 
 void unionSet(int i,int j){
@@ -13,6 +13,8 @@ void unionSet(int i,int j){
         pSet[pari]=parj;
         //printf("c %d %d\n",pari,parj);
         count[parj]+=count[pari];
+        max=max<count[parj]?count[parj]:max;
+        min=min>count[parj]?count[parj]:min;        
         }
 }
 
@@ -27,22 +29,15 @@ int main(){
 
     for(i=1;i<=n;i++){
         pSet[i]=i;
-        count[i]=1;
+        count[i]=1;        
     }
     while(q--){
-        scanf("%c",&o);
-        if(o=='M')
-        {
             scanf("%d%d",&a,&b);
-            getchar();
             unionSet(a,b);
-        }
-        else if(o=='Q'){
-            scanf("%d",&a);
-            getchar();
-            //printf("f %d\n",findSet(a));
-            printf("%d\n",count[findSet(a)]);
-        }
+            if(max!=n)
+                printf("%d\n",max-min);
+            else
+                printf("0\n");
     }
 
 return 0;
